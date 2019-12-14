@@ -1,25 +1,24 @@
 import 'dart:math';
 
 import 'package:first_game_yt_tuto/components/game_over_text.dart';
+import 'package:first_game_yt_tuto/components/gamestartpage.dart';
 import 'package:first_game_yt_tuto/components/health_bar.dart';
 import 'package:first_game_yt_tuto/components/highscore_text.dart';
 import 'package:first_game_yt_tuto/components/player.dart';
-import 'package:first_game_yt_tuto/components/restart_text.dart';
+import 'package:first_game_yt_tuto/components/restart_button.dart';
 import 'package:first_game_yt_tuto/components/score_text.dart';
 import 'package:first_game_yt_tuto/components/start_text.dart';
 import 'package:first_game_yt_tuto/enemy_spawner.dart';
-import 'package:first_game_yt_tuto/state.dart';
 import 'package:first_game_yt_tuto/state.dart' as prefix0;
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/enemy.dart';
 
-class GameController extends Game {
+class GameController extends BaseGame {
   final SharedPreferences storage;
   Size screenSize;
   double tileSize;
@@ -34,16 +33,18 @@ class GameController extends Game {
   HighscoreText highscoreText;
   StartText startText;
   GameOverText gameOverText;
-  ReStartText reStartText;
+  RestartButton restartButton;
+  GameStartPageState gameStartPageState;
 
 
-  GameController(this.storage) {
+  GameController(this.gameStartPageState,this.storage)
+    {
     initialize();
   }
 
   void initialize() async {
     resize(await Flame.util.initialDimensions());
-    state = prefix0.State.menu;
+    state = prefix0.State.playing;
     rand = Random();
     score = 0;
     player = Player(this);
@@ -53,8 +54,6 @@ class GameController extends Game {
     scoreText = ScoreText(this);
     highscoreText = HighscoreText(this);
     startText = StartText(this);
-    gameOverText = GameOverText(this);
-    reStartText = ReStartText(this);
   }
 
   void render(Canvas c) {
@@ -72,8 +71,8 @@ class GameController extends Game {
       healthBar.render(c);
     }
     else if (state == prefix0.State.game_over){
-      gameOverText.render(c);
-      reStartText.render(c);
+      //gameOverText.render(c);
+      //restartButton.render(c);
     }
   }
 
@@ -91,9 +90,10 @@ class GameController extends Game {
       healthBar.update(t);
     }
     else if (state == prefix0.State.game_over){
-      enemies.forEach((Enemy enemy) => enemy.update(t));
-      gameOverText.update(t);
-      reStartText.update(t);
+      //enemies.forEach((Enemy enemy) => enemy.update(t));
+      //gameOverText.update(t);
+      //restartButton.update(t);
+      gameStartPageState.restart = true;
     }
   }
 
@@ -114,7 +114,6 @@ class GameController extends Game {
       });
     }
     else if (state == prefix0.State.game_over){
-      initialize();
 
     }
   }

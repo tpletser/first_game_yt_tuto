@@ -18,7 +18,7 @@ class HighscoreText {
   }
 
   void update(double t) {
-    int highscore = (gameController.storage.get('highscore') ?? 0);
+    int highscore = 0;//(gameController.storage.get('highscore') ?? 0);
       painter.text = TextSpan(
         text: 'Highscore : $highscore',
         style: TextStyle(

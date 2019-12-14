@@ -1,7 +1,5 @@
 import 'package:first_game_yt_tuto/components/enemy.dart';
 import 'package:first_game_yt_tuto/game_controller.dart';
-import 'package:first_game_yt_tuto/main.dart';
-import 'package:flutter/cupertino.dart';
 
 class EnemySpawner{
   final GameController gameController;
